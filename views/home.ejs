@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <%- include('./partial/head.ejs') %>
+        <title>Home Page</title>
+    </head>
+    <style>
+        .card-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+    <body>
+        <%- include('./partial/nav.ejs') %>
+        <div class="container mt-3">
+            <div class="row">
+                <% blogs.forEach(blog => { %>
+                    <div class="col-md-4 mb-4 d-flex align-items-stretch">
+                        <div class="card" style="width: 100%;">
+                            <img src="<%= blog.coverImage %>" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= blog.title %></h5>
+                                <pre class="card-text mt-3"><%= blog.body %></pre>
+                                <a href="/blog/<%= blog._id %>" class="btn btn-primary">Read</a>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+    
+        
+        <%- include('./partial/scripts.ejs') %>
+  </body>
+</html>
