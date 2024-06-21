@@ -48,7 +48,10 @@
             
             <button type="submit" style=" padding: 10px; background-color: #007BFF; color: #ffffff; border: none; border-radius: 5px; cursor: pointer;">Comment</button>
         </form>
-        <div class="mt-3">
+       
+   <% } %>
+
+         <div class="mt-3">
             <% comments.forEach(comment => { %>
                 <div style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
                     <img src="https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?size=626&ext=jpg" 
@@ -65,9 +68,6 @@
             
             
         </div>
-   <% } %>
-
-        
     
 </div>
         <%- include('./partial/scripts.ejs') %>
