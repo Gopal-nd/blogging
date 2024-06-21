@@ -1,37 +1,81 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <%- include('./partial/head.ejs') %>
-        <title>Home Page</title>
-    </head>
-    
-    <body>
-        <%- include('./partial/nav.ejs') %>
+<head>
+    <%- include('./partial/head.ejs') %>
+    <title>Home Page</title>
+    <style>
+        .preview-image {
+            display: block;
+            margin-top: 10px;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <%- include('./partial/nav.ejs') %>
     <div class="container mt-3">
-<form action="/blog" method="post" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input type='text' class="form-control" id="exampleInputEmail1" name="title"  aria-describedby="emailHelp">
-        
-      </div>
-      <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Content</label>
-        <textarea class="form-control" id="exampleInputPassword1" name="body" rows="5"></textarea>
-
-      </div>
- 
-        <div class="mb-3">
-
-            <label class="form-check-label" for="exampleCheck1" class="mb-3">Cover Image</label>
-            <input type="file" class="form-control "  id="exampleCheck1" name="coverImage">
-        </div>
-  
-      <button type="submit" class="btn btn-primary">Submit</button>
-
-</form>
-
+        <form action="/blog" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <textarea class="form-control" id="content" name="body" rows="5"></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-check-label mb-3" for="coverImage">Cover Image</label>
+                <input type="file" class="form-control" id="coverImage" name="coverImage">
+                <h4>Upload Image</h4>
+                <img id="previewImage" src="https://visme.co/blog/wp-content/uploads/2020/10/12.-1-1024x576.jpg" class="preview-image" alt="default image">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
-        
-        <%- include('./partial/scripts.ejs') %>
-  </body>
+    <%- include('./partial/scripts.ejs') %>
+    <script>
+        document.getElementById('coverImage').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const previewImage = document.getElementById('previewImage');
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            } else {
+                // Reset to default image if no file is selected
+                previewImage.src = 'https://visme.co/blog/wp-content/uploads/2020/10/12.-1-1024x576.jpg';
+            }
+        });
+
+        function validateForm() {
+            const title = document.getElementById('title').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const fileInput = document.getElementById('coverImage');
+            const file = fileInput.files[0];
+
+            if (!title) {
+                alert('Title is required');
+                return false;
+            }
+
+            if (!content) {
+                alert('Content is required');
+                return false;
+            }
+
+            if (!file) {
+                alert('Cover Image is required');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
 </html>

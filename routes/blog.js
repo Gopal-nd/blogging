@@ -2,6 +2,7 @@ import express from 'express'
 import path from 'path'
 import multer from 'multer'
 import { BlogModel } from '../models/blog.js'
+import { commentModel } from '../models/comment.js'
 export const blogRouter = express.Router()
 
 let imageis = 'uploads/1718802250449-VNGJOAVBLJ-preview.png'
@@ -46,8 +47,22 @@ await blog.save()
 
 
 blogRouter.get('/:id',async(req,res)=>{
-const blog = await BlogModel.findById(req.params.id)
+const blog = await BlogModel.findById(req.params.id).populate('createdBy')
+const comments = await commentModel.find({blogId:req.params.id}).populate('createdBy')
 
+// console.log('comments',comments)
 return res.render('blog',{user:req.user,
-    blogs:blog})
+    blogs:blog,comments:comments})
+})
+
+
+blogRouter.post('/comment/:blogId',async(req,res)=>{
+const id = req.params.blogId;
+const comment = new commentModel({
+    content :req.body.content,
+    blogId:id,
+    createdBy:req.user._id
+})
+await comment.save()
+return res.redirect(`/blog/${req.params.blogId}`);
 })
